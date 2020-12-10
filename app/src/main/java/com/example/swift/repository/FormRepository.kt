@@ -2,39 +2,50 @@ package com.example.swift.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.swift.persistence.Form
-import com.example.swift.persistence.FormDao
+import com.example.swift.data.entities.Form
+import com.example.swift.data.local.FormDao
+import com.example.swift.data.remote.FormRemoteDataSource
+import com.example.swift.util.performGetOperation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FormRepository @Inject constructor(val formDao: FormDao) {
+class FormRepository @Inject constructor(
+    private val formDaoLocal: FormDao,
+    private val formRemote: FormRemoteDataSource
+) {
     fun insert(form: Form) {
         CoroutineScope(Dispatchers.IO).launch {
-            formDao.insert(form)
+            formDaoLocal.insert(form)
         }
     }
 
     fun delete(form: Form) {
         CoroutineScope(Dispatchers.IO).launch {
-            formDao.delete(form)
+            formDaoLocal.delete(form)
         }
     }
 
     fun update(form: Form) {
         CoroutineScope(Dispatchers.IO).launch {
-            formDao.update(form)
+            formDaoLocal.update(form)
             Log.e("DEBUG", "Update was called in repo")
 
         }
     }
 
+    fun getForm(id: String) = performGetOperation(
+        databaseQuery = { formDaoLocal.getForm(id) },
+        networkCall = { formRemote.getForm(id) },
+        saveCallResult = { formDaoLocal.insert(it) }
+    )
+
     fun getAllForms(): LiveData<List<Form>> {
-        return formDao.getAllForms()
+        return formDaoLocal.getAllForms()
     }
 
     fun getSectionsOfFormId(): LiveData<List<Form>> {
-        return formDao.getAllForms()
+        return formDaoLocal.getAllForms()
     }
 }

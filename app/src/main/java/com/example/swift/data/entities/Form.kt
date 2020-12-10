@@ -1,4 +1,4 @@
-package com.example.swift.persistence
+package com.example.swift.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

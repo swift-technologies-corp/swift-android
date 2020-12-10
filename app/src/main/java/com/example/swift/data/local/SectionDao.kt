@@ -1,7 +1,8 @@
-package com.example.swift.persistence
+package com.example.swift.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.swift.data.entities.Section
 import java.sql.RowId
 
 @Dao

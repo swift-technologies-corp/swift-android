@@ -1,8 +1,8 @@
-package com.example.swift.persistence
+package com.example.swift.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import java.sql.RowId
+import com.example.swift.data.entities.Form
 
 @Dao
 interface FormDao {
@@ -16,7 +16,10 @@ interface FormDao {
     @Update
     fun update(form: Form)
 
-    @Query("select * from tbl_form")
+    @Query("SELECT * FROM tbl_form")
     fun getAllForms(): LiveData<List<Form>>
+
+    @Query("SELECT * FROM tbl_form where id = :id")
+    fun getForm(id: String) : LiveData<Form>
 
 }

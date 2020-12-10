@@ -1,7 +1,7 @@
 package com.example.swift.ui
 
 import androidx.lifecycle.ViewModel
-import com.example.swift.persistence.Form
+import com.example.swift.data.entities.Form
 import com.example.swift.repository.FormRepository
 import javax.inject.Inject
 
